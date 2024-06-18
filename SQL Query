@@ -1,0 +1,233 @@
+                             #sub quires
+-------------------------------------------------------------   
+#Q1 find all Passenger who are in waiting
+
+select first_name,booking_status 
+from Passenger 
+where booking_status = 'Waiting';
+-------------------------------------------------------------
+					
+#Q2 Find all Passenger who are traveling from "Chennai" to 'Bangalore':
+
+SELECT Passenger.first_name
+FROM Passenger
+WHERE source_station = 'Chennai'
+AND destination_station = 'Bangalore';
+-------------------------------------------------------------
+#Q2 find all Passenger  who have a confirmed booking for train 18701:
+
+select Passenger.user_id,Passenger.first_name
+from Passenger
+where booking_status='Confirmed'
+and train_id=18701;
+-------------------------------------------------------------
+#Q3 find all Passenger who have booked a ticket on the same train as anjali:
+
+SELECT p.user_id, p.first_name
+FROM Passenger p
+WHERE p.train_id IN (
+    SELECT train_id
+    FROM Passenger
+    WHERE first_name = 'anjali'
+);
+-------------------------------------------------------------
+
+#Q4 Find all passengers who have a seat allocated to them:
+
+
+select Passenger.user_id,Passenger.first_name
+from Passenger
+where Seat_alocated is not null;
+-------------------------------------------------------------
+
+#Q5 Find all passengers who have not yet received their PNR number:
+
+SELECT  Passenger.user_id, Passenger.first_name
+FROM Passenger
+WHERE pnr_no IS NULL;
+
+-------------------------------------------------------------
+
+#Q6) Select all stations that have a 5 halt 
+
+SELECT *
+FROM station
+WHERE hault = '5';
+-------------------------------------------------------------
+
+#Q7) How many users are from Maharashtra?
+
+SELECT COUNT(*) AS total_users
+FROM users
+WHERE state = 'Maharashtra';
+-------------------------------------------------------------
+
+#8) What is the most popular train type among Passenger?
+
+SELECT train.train_type, COUNT(*) AS total_Passenger
+FROM Passenger
+INNER JOIN train ON Passenger.train_id = train.train_id
+GROUP BY train.train_type
+ORDER BY total_Passenger DESC
+LIMIT 5;
+-------------------------------------------------------------
+                                          # join qustion
+-------------------------------------------------------------                                          
+#Q1 Find all passengers who are traveling on train_id 13247:
+
+SELECT Passenger.first_name, train.train_name
+FROM Passenger
+INNER JOIN train ON Passenger.train_id = train.train_id
+WHERE train.train_id = 13247;   
+-------------------------------------------------------------
+                
+#Q2 Find all passengers who have booked a ticket for a train that is more expensive than ₹500:
+
+SELECT Passenger.first_name, train.train_name
+FROM Passenger
+INNER JOIN train ON Passenger.train_id = train.train_id
+WHERE train.fair > 500;
+-------------------------------------------------------------
+#Q3 Find all passengers who have booked a ticket on a train that has more than 10 coaches:
+
+SELECT Passenger.first_name, train.train_name
+FROM Passenger
+INNER JOIN train ON Passenger.train_id = train.train_id
+WHERE train.coaches > 10 limit 5;
+-------------------------------------------------------------
+
+#Q4) find all passanger first name and last name who traveling in train along with train name 
+
+select users.first_name,users.last_name,train.train_name
+from Passenger 
+inner join train on Passenger.train_id=train.train_id
+inner join users on Passenger.user_id=users.user_id limit 6;
+-------------------------------------------------------------
+
+#Q5) Find all passengers who have booked a ticket on a train that is of type "Express":
+
+SELECT Passenger.first_name, train.train_name
+FROM Passenger
+INNER JOIN train ON Passenger.train_id = train.train_id
+WHERE train.train_type = 'Express';
+-------------------------------------------------------------
+
+#Q6) Select all stations that have a train of type "Express" arriving at them
+
+SELECT *
+FROM station
+JOIN train ON station.train_id = train.train_id
+WHERE train.train_type = 'Express';
+-------------------------------------------------------------
+-- Comparison Operators --
+-- Find all passengers traveling to 'Delhi'.
+
+SELECT * 
+FROM passenger
+WHERE Destination_station = 'Delhi';
+
+--Retrieve all trains that have more than 20 coaches.
+SELECT * 
+FROM train
+WHERE Coaches > 20;
+-------------------------------------------------------------
+
+-- Logical Operators --
+-- List all passengers who have a confirmed booking status or are traveling from 'Mumbai' with top 5.
+
+SELECT * 
+FROM passenger
+WHERE Booking_status = 'Confirmed' OR Source_station = 'Mumbai'
+	limit 5;
+
+-- Find all users who live in 'Jaipur' and have 'Sneha' as their first name.
+SELECT * 
+FROM users
+WHERE City = 'Jaipur' AND First_name = 'Sneha';
+-------------------------------------------------------------
+
+-- LIKE Operator---
+
+-- Find all users whose first name starts with 'S'.
+
+SELECT *
+FROM users
+WHERE First_name LIKE 'S%';
+
+
+--Find all stations whose name contains 'abad'.
+
+SELECT *
+FROM station
+WHERE NAME LIKE '%abad%';
+
+-------------------------------------------------------------
+--Find all passengers with a destination station containing 'Delhi'.
+
+SELECT *
+FROM Passenger
+WHERE Destination_station LIKE '%Delhi%';
+-------------------------------------------------------------
+-- AND Operator --
+Find all passengers with a Waiting booking status traveling from 'Mumbai' to 'Pune'.
+
+SELECT *
+FROM Passenger
+WHERE Source_station = 'Mumbai' AND Destination_station = 'Pune';
+-------------------------------------------------------------
+-- OR Operator --
+Find all passengers traveling from either 'Delhi' or 'Mumbai'
+
+SELECT *
+FROM Passenger
+WHERE Source_station = 'Delhi' OR Source_station = 'Mumbai';
+-------------------------------------------------------------
+-- NOT Operator --
+Find all users who are not from 'Rajasthan' with top 5
+
+SELECT *
+FROM users
+WHERE NOT State = 'Rajasthan'
+	limit 5;
+-------------------------------------------------------------
+-- BETWEEN Operator --
+Find all trains with fares between 500 and 1000 (inclusive).
+
+SELECT *
+FROM train
+WHERE Fair BETWEEN 500 AND 1000;
+-------------------------------------------------------------
+-- IN Operator --
+Find all users from 'Maharashtra', 'Gujarat', or 'Goa'.
+
+SELECT *
+FROM users
+WHERE State IN ('Maharashtra', 'Gujarat', 'Goa');
+-------------------------------------------------------------
+-- ANY Operator --
+Find all passengers with a seat number greater than any other passenger on the same train.
+
+SELECT *
+FROM Passenger
+WHERE Seat_alocated > ANY (SELECT Seat_alocated FROM Passenger WHERE Train_id = 16156);
+-------------------------------------------------------------
+-- ALL Operator --
+Find all passengers with a seat number greater than all other passengers on the same train.
+
+SELECT *
+FROM Passenger
+WHERE Seat_alocated > ALL (SELECT Seat_alocated FROM Passenger WHERE Train_id = 16156);
+-------------------------------------------------------------
+-- DATA MODIFICATION LANGUAGE (DML) --
+
+UPDATE Passenger
+SET booking_status = 'RAC' 
+WHERE user_id = 110;
+-------------------------------------------------------------
+UPDATE Passenger
+SET booking_status = 'RAC' 
+WHERE user_id = 124;
+-------------------------------------------------------------
+UPDATE Passenger
+SET booking_status = 'RAC' 
+WHERE user_id = 130;
