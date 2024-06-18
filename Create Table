@@ -1,0 +1,50 @@
+create database railway_managment;
+use railway_managment;
+
+CREATE TABLE users(
+    USER_ID	INT not null,
+    First_name	VARCHAR(512) not null,
+    Last_name	VARCHAR (512) not null,
+    Contact	bigint not null,
+    Email_id	VARCHAR(512),
+    State	VARCHAR(512),
+    City	VARCHAR(512),
+    primary key(user_id)
+);
+
+
+CREATE TABLE Passenger(
+    Passenger_id	VARCHAR(512) not null ,
+    USER_ID	INT not null  ,
+    First_name	VARCHAR(512) not null,
+    PNR_no	INT ,
+    Booking_status	VARCHAR(512),
+    Seat_alocated	INT,
+    Source_station	VARCHAR(512),
+    Destination_station	VARCHAR(512),
+    Train_id	INT not null,
+    primary key (Passenger_id),
+    foreign key(user_id) references users(user_id),
+    foreign key(Train_id) references train(train_id) 
+    
+);
+
+ CREATE TABLE train(
+    Train_id	INT not null ,
+    Train_name	VARCHAR(512) not null,
+    Train_type	VARCHAR(512) not null,
+    Coaches	INT,
+    Fair	INT,
+    primary key (train_id)
+    
+);
+
+CREATE TABLE station(
+    Station_no	INT not null,
+    NAME	VARCHAR(512) not null,
+    HAULT	INT,
+    Arrival_time	varchar(512) not null,
+    Train_id	INT not null,
+    primary key (station_no),
+    foreign key (train_id) references train (train_id)
+);
