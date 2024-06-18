@@ -1,0 +1,9 @@
+Select * from users;
+SELECT * FROM Passenger;
+Select * from train; 
+Select * from station;
+
+desc users;
+desc Passenger;
+desc train;
+desc station;
